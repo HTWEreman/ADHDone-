@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ADHDone!</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="ADHDone!"><meta name="theme-color" content="#8E3FB8"><link rel="apple-touch-icon" href="icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#F7EEF6;--card:#fff;--ink:#2A1E3A;--mute:#6E5F80;--pri:#8E3FB8;--pri-ink:#fff;--gold:#F4B942;--plum:#C23783;--line:#E6D3E6;--soft:#F0DDF0;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1E1426;--card:#2B1D38;--ink:#F5E9F7;--mute:#BBA6C8;--pri:#C58BF0;--pri-ink:#240F33;--plum:#F08AC0;--line:#44304F;--soft:#3A2849;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1E1426;--card:#2B1D38;--ink:#F5E9F7;--mute:#BBA6C8;--pri:#C58BF0;--pri-ink:#240F33;--plum:#F08AC0;--line:#44304F;--soft:#3A2849;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.45 "DM Sans",system-ui,sans-serif}
+.app{max-width:430px;margin:0 auto;padding:16px 18px 40px;min-height:100vh;position:relative}
+h1,h2,.big{font-family:"Fredoka","DM Sans",system-ui,sans-serif;font-weight:600;line-height:1.15;margin:0}
+h1{font-size:32px}h2{font-size:22px}
+p{margin:0}.mute{color:var(--mute)}.small{font-size:14px}
+.brand{font:600 26px "Fredoka",sans-serif;color:var(--pri);margin-bottom:10px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.lvl{flex:1;min-width:0}
+.lvl b{font-size:14px;display:block}
+.bar{height:10px;border-radius:6px;background:var(--soft);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;width:0;background:var(--gold);border-radius:6px;transition:width .5s}
+.pts{background:var(--gold);color:#3A2A00;font:600 20px "Fredoka",sans-serif;padding:6px 14px;border-radius:20px;white-space:nowrap}
+button{font:inherit;color:inherit;cursor:pointer;border:0;min-height:48px;border-radius:14px;padding:0 18px}
+button:focus-visible,[contenteditable]:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.btn{background:var(--pri);color:var(--pri-ink);font-weight:700;width:100%;font-size:18px}
+.ghost{background:var(--soft)}
+.link{background:none;text-decoration:underline;color:var(--mute);min-height:44px}
+.view{display:none}.view.on{display:block}
+.mic{display:block;margin:34px auto 18px;width:132px;height:132px;border-radius:50%;background:var(--pri);color:var(--pri-ink);font-size:52px;padding:0;box-shadow:0 0 0 14px var(--soft)}
+.mic.rec{animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 26px var(--soft)}}
+.say{min-height:120px;background:var(--card);border-radius:16px;padding:14px 16px;margin:18px 0;border:1px solid var(--line)}
+.room{font:600 15px "Fredoka",sans-serif;color:var(--pri);margin:18px 0 6px}
+.row{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 6px 4px 14px;margin-bottom:8px}
+.row span{flex:1;padding:8px 0;outline:none}
+.row button{background:none;min-height:44px;width:44px;padding:0;color:var(--mute);font-size:22px}
+.task{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px 20px;margin:6px 0 16px}
+.task .big{font-size:30px;margin:6px 0 18px}
+.timer{font:600 40px "Fredoka",sans-serif;display:flex;align-items:center;justify-content:space-between}
+.timer button{background:var(--soft);font-size:16px}
+.next{margin:18px 2px}
+.next li{padding:3px 0}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.rough{background:var(--plum);color:var(--pri-ink);font-weight:700}
+:root[data-theme="dark"] .rough{color:#14102A}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip,.pchip{background:var(--soft);min-height:44px;border-radius:22px}.chip.on,.pchip.on{background:var(--pri);color:var(--pri-ink);font-weight:700}.note{font:inherit;min-height:48px;border-radius:14px;border:1px solid var(--line);padding:0 14px;background:var(--bg);color:var(--ink)}
+.sheet{position:fixed;inset:0;background:rgba(10,20,25,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.on{display:flex}
+.sheet>div{background:var(--card);width:100%;max-width:430px;border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px));display:grid;gap:10px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,40px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:24px;opacity:0;transition:.3s;z-index:30;text-align:center;max-width:90%}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.dot{position:fixed;width:12px;height:12px;border-radius:50%;pointer-events:none;z-index:40;animation:fly .9s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) scale(.3);opacity:0}}
+@media (prefers-reduced-motion:reduce){.dot{display:none}.mic.rec{animation:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="brand">ADHDone!</div>
+<header>
+  <div class="lvl"><b id="lvname">Level 1 · Warming up</b><div class="bar"><i id="bar"></i></div></div>
+  <div class="pts"><span id="pts">0</span> pts</div>
+</header>
+
+<section id="hello" class="view on">
+  <h1 style="margin-top:20px">Hi! I’m ADHDone!</h1>
+  <p class="mute" style="margin:8px 0 22px">What should I call you?</p>
+  <input id="nm" class="note" style="width:100%;margin-bottom:12px" placeholder="Your name" aria-label="Your name" autocomplete="given-name">
+  <input id="hp" class="note" style="width:100%;margin-bottom:12px" placeholder="Someone you can ask for help (optional)" aria-label="Someone you can ask for help">
+  <button class="btn" id="hi_go">Let’s go</button>
+</section>
+
+<section id="talk" class="view">
+  <h1 id="hi">So, what would you like to get accomplished?</h1>
+  <p class="mute" style="margin-top:8px">Say it all. Messy is fine. I’ll sort it out.</p>
+  <button class="mic" id="mic" aria-label="Start talking">🎤</button>
+  <div class="say" id="say" aria-live="polite"><span class="mute">Tap the mic and talk, or type below.</span></div><textarea id="ta" class="note" style="width:100%;min-height:90px;padding:10px 14px" placeholder="Or type here. Tip: tap the mic on your keyboard to talk." aria-label="Your tasks"></textarea><button class="btn" id="mk" style="margin-top:10px">Make my list</button>
+</section>
+
+<section id="review" class="view">
+  <h2>Tap one to start</h2>
+  <p class="mute small" style="margin-top:4px">Can’t decide? Let me pick. Tap ✎ to change a task.</p>
+  <div id="list"></div>
+  <button class="ghost" id="addvoice" style="width:100%;margin:6px 0 14px">🎤 Add more by voice</button>
+  <button class="btn" id="rand">🎲 Pick one for me</button>
+</section>
+
+<section id="do" class="view">
+  <p class="mute small" id="left"></p>
+  <div class="task">
+    <p class="room" id="room" style="margin:0"></p>
+    <p class="big" id="cur"></p>
+    <div class="timer"><span id="clock">10:00</span><button id="tbtn">Start timer</button></div>
+  </div>
+  <button class="btn" id="done">✓ Done</button>
+  <div class="actions">
+    <button class="ghost" id="pass">Pass it on</button>
+    <button class="rough" id="roughbtn">Rough moment</button>
+  </div>
+  <div class="next" id="nextbox"><p class="small mute">Up next (tap to switch)</p><ul class="mute" id="next" style="margin:4px 0 0;padding-left:20px"></ul></div>
+  <button class="link" id="seeall">See the full list</button>
+</section>
+
+<section id="fin" class="view">
+  <h1 style="margin-top:30px">Everything’s done. 🎉</h1>
+  <p class="mute" style="margin:10px 0 24px">That’s the whole list. Rest, you earned it.</p>
+  <button class="btn" id="again">Start a new list</button>
+</section>
+</div>
+
+<div class="sheet" id="rs"><div>
+  <h2>That’s okay. Pick one.</h2>
+  <button class="btn" id="tiny">Do the tiniest win (+5)</button>
+  <button class="ghost" id="breathe">Take 5 minutes first</button>
+  <button class="ghost" id="help">Ask Zac for help (+5)</button>
+  <button class="link" data-close>Back</button>
+</div></div>
+<div class="sheet" id="ps"><div>
+  <h2>Pass this to…</h2>
+  <div class="chips" id="people"></div><div style="display:flex;gap:8px"><input id="pn" class="note" style="flex:1;min-width:0" placeholder="Add someone to ask" aria-label="Add a person"><button class="ghost" id="padd">Add</button></div><div class="chips"><button class="chip">Need help</button><button class="chip">Whenever you can</button><button class="chip">I’m wiped</button></div><input id="note" class="note" placeholder="Add a note (optional)" aria-label="Note"><button class="btn" id="tozac">Send</button>
+  <p class="small mute">Pick a quick message or write your own. Asking for help earns points too.</p>
+  <button class="link" data-close>Back</button>
+</div></div>
+<div class="sheet" id="bsh"><div><h2>Take a break</h2><p class="mute">Your list will wait. No rush.</p><div class="timer" style="justify-content:center"><span id="bclock">5:00</span></div><button class="btn" id="bback">I’m ready</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+var SAMPLE="Okay so the kitchen is a disaster, dishes everywhere and the counters need wiping. The kids’ toys are all over the living room, there’s wet laundry in the washer and a basket that needs folding, and the bathroom sink is gross.";
+var tasks=[],pts=0,streak=0,timer=null,secs=600;
+var names=["Warming up","Getting going","In the groove","Tidy champion","Home hero"];
+var praise=["Nice work!","One down!","You did it!","That counts!","Look at you go!"];
+function view(v){["hello","talk","review","do","fin"].forEach(function(x){$(x).classList.toggle("on",x===v)});window.scrollTo(0,0)}
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(function(){e.classList.remove("on")},2200)}
+function score(n){pts+=n;var l=Math.floor(pts/50);$("pts").textContent=pts;$("lvname").textContent="Level "+(l+1)+" · "+names[Math.min(l,4)];$("bar").style.width=(pts%50)*2+"%"}
+function burst(){var c=["#F4B942","#8E3FB8","#C23783","#F06AA8"];for(var i=0;i<16;i++){var d=document.createElement("i");d.className="dot";d.style.left="50%";d.style.top="60%";d.style.background=c[i%4];d.style.setProperty("--x",(Math.random()*300-150)+"px");d.style.setProperty("--y",(Math.random()*-260-20)+"px");document.body.appendChild(d);setTimeout(function(x){x.remove()},950,d)}}
+function bigBurst(){var c=["#F4B942","#8E3FB8","#C23783","#F06AA8"];for(var w=0;w<4;w++){setTimeout(function(){for(var i=0;i<28;i++){var d=document.createElement("i");d.className="dot";d.style.left=Math.random()*100+"%";d.style.top="-10px";d.style.width=d.style.height=(8+Math.random()*10)+"px";d.style.background=c[i%4];d.style.setProperty("--x",(Math.random()*120-60)+"px");d.style.setProperty("--y",(window.innerHeight+40)+"px");d.style.animationDuration=(1.6+Math.random()*1.4)+"s";document.body.appendChild(d);setTimeout(function(x){x.remove()},3200,d)}},w*450)}}
+function listen(){
+  var m=$("mic"),s=$("say"),w=SAMPLE.split(" "),k=0;m.classList.add("rec");s.textContent="";
+  var h=setInterval(function(){s.textContent+=(k?" ":"")+w[k++];if(k>=w.length){clearInterval(h);m.classList.remove("rec");s.textContent="Sorting into small steps…";
+    setTimeout(function(){if(!tasks.length)tasks=[{r:"Kitchen",t:"Wash the dishes",m:10},{r:"Kitchen",t:"Wipe the counters",m:5},{r:"Living room",t:"Put the toys back in the basket",m:10},{r:"Laundry",t:"Move the wet clothes to the dryer",m:5},{r:"Laundry",t:"Fold one basket of clothes",m:15},{r:"Bathroom",t:"Wipe the sink and mirror",m:10}];renderList();view("review")},1000)}},70)}
+function renderList(){
+  var box=$("list");box.innerHTML="";var seen={};
+  tasks.forEach(function(t,i){
+    if(!seen[t.r]){seen[t.r]=1;var r=document.createElement("p");r.className="room";r.textContent=t.r;box.appendChild(r)}
+    var row=document.createElement("div");row.className="row";
+    var sp=document.createElement("span");sp.textContent=t.t;sp.setAttribute("role","button");sp.tabIndex=0;sp.style.cursor="pointer";sp.onclick=function(){tasks.unshift(tasks.splice(i,1)[0]);showTask()};sp.onkeydown=function(e){if(e.key==="Enter"&&!sp.isContentEditable)sp.onclick()};var ed=document.createElement("button");ed.textContent="✎";ed.setAttribute("aria-label","Edit task");ed.onclick=function(){if(sp.isContentEditable){t.t=sp.textContent.trim()||t.t;renderList();return}sp.contentEditable="plaintext-only";sp.onclick=null;sp.focus();ed.textContent="✓"};
+    var x=document.createElement("button");x.textContent="×";x.setAttribute("aria-label","Remove task");x.onclick=function(){tasks.splice(i,1);renderList()};
+    row.appendChild(sp);row.appendChild(ed);row.appendChild(x);box.appendChild(row)})
+}
+function clock(){var m=Math.floor(secs/60),s=secs%60;$("clock").textContent=m+":"+(s<10?"0":"")+s}
+function stopTimer(){clearInterval(timer);timer=null;$("tbtn").textContent="Start timer"}
+function showTask(){
+  stopTimer();
+  if(!tasks.length){view("fin");return}
+  var t=tasks[0];secs=t.m*60;clock();
+  $("room").textContent=t.r;$("cur").textContent=t.t;
+  $("left").textContent=tasks.length+(tasks.length===1?" task left":" tasks left");
+  var n=$("next");n.innerHTML="";tasks.slice(1,3).forEach(function(x,k){var li=document.createElement("li");var b=document.createElement("button");b.textContent=x.t;b.className="link";b.style.cssText="text-align:left;padding:0;min-height:44px;text-decoration:none;color:inherit";b.onclick=function(){tasks.unshift(tasks.splice(k+1,1)[0]);showTask()};li.appendChild(b);n.appendChild(li)});
+  $("nextbox").style.display=tasks.length>1?"block":"none";view("do")
+}
+$("mic").onclick=listen;
+var me="you";
+function hello(){var v=$("nm").value.trim();if(v){me=v}addHelper($("hp").value);$("hi").textContent="So, "+(v?v+", ":"")+"what would you like to get accomplished?";save();view("talk")}
+$("hi_go").onclick=hello;$("nm").onkeydown=function(e){if(e.key==="Enter"){hello()}};
+$("addvoice").onclick=function(){$("say").textContent="Tap the mic.";view("talk")};
+$("rand").onclick=function(){if(!tasks.length)return;var i=Math.floor(Math.random()*tasks.length);tasks.unshift(tasks.splice(i,1)[0]);showTask()};
+$("seeall").onclick=function(){renderList();view("review")};
+$("tbtn").onclick=function(){if(timer){stopTimer();return}$("tbtn").textContent="Pause";timer=setInterval(function(){secs--;clock();if(secs<=0){stopTimer();toast("Time’s up. Finish up or keep going!")}},1000)};
+$("done").onclick=function(){
+  var t=tasks.shift(),g=10+(t.m>=10?5:0);streak++;burst();
+  var msg=praise[Math.floor(Math.random()*praise.length)].replace("!",", "+me+"!")+" +"+g;
+  if(streak%3===0){g+=20;msg="Combo of 3! +"+g}
+  score(g);toast(msg);if(tasks.length){renderList();view("review")}else{showTask();bigBurst();score(25);toast("Whole list done! +25")}};
+$("pass").onclick=function(){$("ps").classList.add("on")};
+var chosen="";
+document.querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var was=c.classList.contains("on");document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on")});if(!was){c.classList.add("on");chosen=c.textContent}else{chosen=""}}});
+$("tozac").onclick=function(){tasks.shift();var n=$("note").value.trim(),m=[chosen,n].filter(Boolean).join(" · ");$("ps").classList.remove("on");$("note").value="";chosen="";document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on")});score(5);toast(m?"Sent to Zac: “"+m+"” +5":"Sent to Zac. Asking for help counts. +5");showTask();setTimeout(function(){toast("Zac replied: “On it 👍”")},3800)};
+$("roughbtn").onclick=function(){$("rs").classList.add("on")};
+$("tiny").onclick=function(){$("rs").classList.remove("on");stopTimer();$("room").textContent="Tiniest win";$("cur").textContent="Put one thing back where it belongs. That’s all.";$("tbtn").textContent="Start timer";secs=60;clock();
+  $("done").onclick=function(){score(5);toast("That counts. +5");$("done").onclick=doneFn;showTask()}};
+var doneFn=$("done").onclick;
+var helpers=[],to=0,bt=null,bs=300;
+function renderPeople(){var b=$("people");b.innerHTML="";helpers.forEach(function(h,i){var c=document.createElement("button");c.className="pchip"+(i===to?" on":"");c.textContent=h;c.onclick=function(){to=i;renderPeople()};b.appendChild(c)});$("tozac").textContent=helpers.length?"Send to "+helpers[to]:"Add someone first";$("help").textContent=helpers.length?"Ask "+helpers[0]+" for help (+5)":"Add someone to ask for help"}
+function addHelper(v){v=(v||"").trim();if(!v||helpers.indexOf(v)>-1){return}helpers.push(v);to=helpers.length-1;renderPeople()}
+$("padd").onclick=function(){addHelper($("pn").value);$("pn").value=""};
+$("tozac").onclick=function(){if(!helpers.length){$("pn").focus();return}var who=helpers[to];tasks.shift();var n=$("note").value.trim(),m=[chosen,n].filter(Boolean).join(" · ");$("ps").classList.remove("on");$("note").value="";chosen="";document.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on")});score(5);toast("Message ready for "+who+". Asking for help counts. +5");showTask()};
+renderPeople();
+function bclock(){var m=Math.floor(bs/60),s=bs%60;$("bclock").textContent=m+":"+(s<10?"0":"")+s}
+function endBreak(){clearInterval(bt);bt=null;$("bsh").classList.remove("on")}
+$("breathe").onclick=function(){$("rs").classList.remove("on");bs=300;bclock();$("bsh").classList.add("on");clearInterval(bt);bt=setInterval(function(){bs--;bclock();if(bs<=0){endBreak();toast("Break’s over. Ready when you are.")}},1000)};
+$("bback").onclick=endBreak;
+$("help").onclick=function(){$("rs").classList.remove("on");if(!helpers.length){$("ps").classList.add("on");return}score(5);sms("Hi "+helpers[0]+", I’m having a rough moment and could use a hand.");toast("Message ready for "+helpers[0]+". +5")};
+document.querySelectorAll("[data-close]").forEach(function(b){b.onclick=function(){$("rs").classList.remove("on");$("ps").classList.remove("on")}});
+$("again").onclick=function(){tasks=[];$("say").innerHTML='<span class="mute">Tap the mic.</span>';view("talk")};
+var rec=null,KEY="adhdone-v1";
+function save(){try{localStorage.setItem(KEY,JSON.stringify({tasks:tasks,pts:pts,me:me,helpers:helpers}))}catch(e){}}
+var _s=score;score=function(n){_s(n);save()};
+var _r=renderList;renderList=function(){_r();save()};
+var _p=renderPeople;renderPeople=function(){_p();save()};
+var _st=showTask;showTask=function(){_st();save()};
+function sms(b){try{location.href="sms:&body="+encodeURIComponent(b)}catch(e){}}
+var ROOMS=[["Bathroom",/bath|toilet|shower|tub|mirror/],["Laundry",/laundry|clothes|dryer|washer|fold|towel/],["Kitchen",/kitchen|dish|counter|stove|fridge|oven|trash|garbage|cook/],["Living room",/living|couch|sofa|toys|tv|coffee table/],["Bedroom",/bed|sheet|closet|dresser/],["Floors",/vacuum|sweep|mop|floor/]];
+function room(s){for(var i=0;i<ROOMS.length;i++){if(ROOMS[i][1].test(s)){return ROOMS[i][0]}}return "Home"}
+function parse(txt){
+  var parts=txt.split(/[.,;!?\n]+|\band\b|\bthen\b|\balso\b|\bplus\b/i),out=[],seen={};
+  var lead=/^(ok(ay)?|so|um|uh|and|then|also|i (still )?(need|have|want|gotta|should|got) to|i need|need to|have to|gotta|should|i['\u2019]d like to|please|there['\u2019]?s|there is|there are)\s+/i;
+  parts.forEach(function(p){
+    p=(p||"").trim();for(var k=0;k<4;k++){p=p.replace(lead,"")}
+    if(p.length<3){return}
+    var low=p.toLowerCase(),r=room(low),t;
+    if(/all over|everywhere/.test(low)){t="Pick up "+p.replace(/\s+(are |is )?(all over|everywhere).*/i,"").toLowerCase()}
+    else if(/\b(is|are|was)\b/.test(low)&&/mess|disaster|gross|dirty|wreck|cluttered/.test(low)){t="Tidy "+(r==="Home"?"up":"the "+r.toLowerCase())}
+    else{t=p.charAt(0).toUpperCase()+p.slice(1)}
+    t=t.charAt(0).toUpperCase()+t.slice(1,80);var key=t.toLowerCase();if(seen[key]){return}seen[key]=1;
+    out.push({r:r,t:t,m:/fold|vacuum|mop|scrub/.test(low)?15:(p.length<22?5:10)})});
+  return out.slice(0,15)
+}
+function listen(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition,m=$("mic");
+  if(!SR){toast("Mic isn\u2019t available here. Type, or use your keyboard\u2019s mic.");$("ta").focus();return}
+  if(rec){rec.stop();return}
+  try{rec=new SR();rec.lang="en-US";rec.interimResults=true;rec.continuous=true;
+    rec.onresult=function(e){var t="";for(var i=0;i<e.results.length;i++){t+=e.results[i][0].transcript+" "}$("ta").value=t.trim()};
+    rec.onerror=function(){rec=null;m.classList.remove("rec");toast("Mic didn\u2019t work. Type, or use your keyboard\u2019s mic.");$("ta").focus()};
+    rec.onend=function(){rec=null;m.classList.remove("rec");if($("ta").value.trim()){make()}};
+    rec.start();m.classList.add("rec")}catch(e){rec=null;$("ta").focus()}
+}
+function make(){
+  var txt=$("ta").value.trim();
+  if(!txt){toast("Say or type a few things first.");return}
+  var out=parse(txt);if(!out.length){toast("Couldn\u2019t find any tasks. Try adding more.");return}
+  out.forEach(function(x){tasks.push(x)});
+  $("ta").value="";$("say").innerHTML='<span class="mute">Tap the mic and talk, or type below.</span>';renderList();view("review")
+}
+$("mic").onclick=listen;$("mk").onclick=make;
+var _tz=$("tozac").onclick;
+$("tozac").onclick=function(){if(helpers.length&&tasks.length){var nt=$("note").value.trim();sms("Hi "+helpers[to]+", can you help me with this? "+tasks[0].t+(nt?" ("+nt+")":(chosen?" ("+chosen+")":"")))}_tz()};
+try{var sv=JSON.parse(localStorage.getItem(KEY)||"null");
+  if(sv&&sv.me){tasks=sv.tasks||[];pts=sv.pts||0;me=sv.me;helpers=sv.helpers||[];to=0;score(0);renderPeople();
+    $("hi").textContent="So, "+(me!=="you"?me+", ":"")+"what would you like to get accomplished?";
+    if(tasks.length){renderList();view("review")}else{view("talk")}}}catch(e){}
+</script>
+</body>
+</html>
